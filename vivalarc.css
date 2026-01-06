@@ -16,6 +16,9 @@ vivaldi version: v6.6 - v7.0
     --colorToviTransparent:transparent;
     --webview-shadow-light:0px 1px 3px 0px rgba(0, 0, 0, 0.1), 0px 0px var(--window-border) 0px rgba(0, 0, 0, 0.10);
     --webview-shadow-dark:0px 2px 2px 0px rgba(0, 0, 0, 0.05), 0px 2px 8px 0px rgba(0, 0, 0, 0.05), 0px 0px 0px 1.2px #ffffff18;
+    
+    /* Pinned tabs as icons grid - from Phi */
+    --pinned-column-count: 4; /* Number of pinned tabs per row */
 }
 
 /*breakmode*/
@@ -574,3 +577,126 @@ vivaldi version: v6.6 - v7.0
 button.button-startpage { box-shadow: none !important; }
 button.button-startpage:after { background-image: none !important; }
 button.button-startpage:active { background: none !important; }
+
+/*━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PINNED TABS AS ICON GRID (from Phi for Vivaldi)
+  Displays pinned tabs as a grid of favicon-only icons
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+
+/* Hide title text for pinned tabs */
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-position.is-pinned .tab .title {
+    display: none !important;
+}
+
+/* Pinned tabs container - grid layout */
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-strip:has(.is-pinned) {
+    display: grid;
+    grid-template-columns: repeat(var(--pinned-column-count), 1fr);
+    grid-auto-rows: min-content;
+    gap: 4px;
+    padding: 4px;
+}
+
+/* Regular tabs and separators span full width */
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-strip .tab-position:not(.is-pinned),
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-strip .separator,
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-strip .newtab {
+    grid-column: 1 / span var(--pinned-column-count);
+}
+
+/* Pinned tab wrapper - square aspect ratio */
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-position.is-pinned {
+    grid-column: span 1;
+    position: relative;
+    transform: none;
+    margin: 0;
+    padding: 0;
+    max-height: unset;
+}
+
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-position.is-pinned .tab-wrapper {
+    aspect-ratio: 1;
+    background-color: var(--colorAccentBgAlpha);
+    border-radius: var(--radiusHalf);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    max-height: unset;
+}
+
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-position.is-pinned .tab-wrapper:hover {
+    background-color: var(--colorAccentBg);
+}
+
+/* Active pinned tab styling */
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-position.is-pinned .tab-wrapper:has(.tab.active) {
+    background-color: var(--colorBg);
+    box-shadow: 0 0 0 1px var(--colorAccentBg);
+}
+
+/* Pinned tab inner styling */
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-position.is-pinned .tab {
+    max-height: unset;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-position.is-pinned .tab-header {
+    flex: 1;
+    padding: 0;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+/* Favicon centering */
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-position.is-pinned .favicon {
+    margin: 0 auto;
+}
+
+/* Hide close button on pinned tabs */
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-position.is-pinned .close {
+    display: none;
+}
+
+/* Badge positioning for pinned tabs */
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-position.is-pinned .button-badge {
+    position: absolute;
+    top: unset !important;
+    right: 2px !important;
+    bottom: 2px !important;
+    left: unset !important;
+}
+
+/* Tab group indicator for pinned stacked tabs */
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-position.is-pinned .tab-group-indicator {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    padding: 0;
+    gap: 2px;
+    display: flex;
+}
+
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-position.is-pinned .tab-indicator {
+    height: 3px;
+    border-radius: 2px;
+    flex: 1;
+    margin: 0 !important;
+    border: 0;
+}
+
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-position.is-pinned .tab-indicator:not(.active):not(:hover) {
+    background-color: var(--colorHighlightFgAlpha) !important;
+}
+
+#browser:not(.tabs-top):not(.tabs-bottom) .tab-position.is-pinned .tab-indicator.active {
+    background-color: var(--colorAccentBg) !important;
+}
